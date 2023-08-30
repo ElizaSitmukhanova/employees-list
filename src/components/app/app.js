@@ -86,6 +86,16 @@ class App extends Component {
     onFilterSelect = (filter) => {
         this.setState({filter: filter});
     }
+    onChangeSalary = (newSalary, id) => {
+        this.setState(({ data }) => ({
+            data: data.map(person => {
+                if (person.id === id) {
+                    return { ...person, salary: newSalary.replace(/\D/g, '') }
+                }
+                return person;
+            })
+        }))
+    }
    render() {
     const sumEmployees = this.state.data.length;
     const increasedEmp = this.state.data.filter(item => item.increase).length;
@@ -97,7 +107,7 @@ class App extends Component {
             <AppInfo 
             sumEmployees={sumEmployees}
             increasedEmp={increasedEmp}/>
-            <div className="search-panel">
+            <div className="search-panel" >
                 <SearchPanel
                 onUpdateSearch = {this.onUpdateSearch}  />
                 <AppFilter 
@@ -108,6 +118,7 @@ class App extends Component {
             data={visibleData}
             onDelete = {this.deleteItem}
             onToggleProp = {this.onToggleProp}
+            onChangeSalary={this.onChangeSalary}
             />
             <EmployeesAddForm
             onAdd = {this.addItem} 
